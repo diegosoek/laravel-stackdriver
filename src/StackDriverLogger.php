@@ -36,10 +36,16 @@ class StackDriverLogger
     public function __construct()
     {
         $this->project_id = env('GCP_PROJECT_ID');
+        $this->keyFilePath = env('GCP_LOG_CREDENTIALS');
+
+        if(!isset($this->keyFilePath)){
+            $this->keyFilePath = env('GOOGLE_APPLICATION_CREDENTIALS');
+        }
 
         // Instantiates a client
         $this->loggingClient = new LoggingClient([
-            'projectId' => $this->project_id
+            'projectId' => $this->project_id,
+            'keyFilePath' => $this->keyFilePath
         ]);
 
         // The name of the log to write to
